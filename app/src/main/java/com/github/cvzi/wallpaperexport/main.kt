@@ -399,10 +399,10 @@ class MainActivity : ComponentActivity() {
         withContext(Dispatchers.IO) {
             val wallpaperManager = WallpaperManager.getInstance(this@MainActivity)
 
-            drawables[0] = wallpaperManager.getBuiltInDrawable(
+            drawables[0] = wallpaperManager.drawable
+            drawables[1] = wallpaperManager.getBuiltInDrawable(
                 30000, 30000, false, 0.5f, 0.5f
             )
-            drawables[1] = wallpaperManager.drawable
             drawables[2] = wallpaperManager.getBuiltInDrawable(FLAG_LOCK)
 
             runOnUiThread {

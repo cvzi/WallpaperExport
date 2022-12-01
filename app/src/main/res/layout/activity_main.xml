@@ -87,6 +87,7 @@
                     android:layout_height="wrap_content"
                     android:adjustViewBounds="true"
                     android:contentDescription="@string/system_wallpaper"
+                    android:padding="2dp"
                     android:src="@android:drawable/ic_menu_gallery" />
 
             </LinearLayout>
@@ -136,6 +137,7 @@
                     android:layout_height="wrap_content"
                     android:adjustViewBounds="true"
                     android:contentDescription="@string/builtin_wallpaper"
+                    android:padding="2dp"
                     android:src="@android:drawable/ic_menu_gallery" />
             </LinearLayout>
 
@@ -184,6 +186,7 @@
                     android:layout_height="wrap_content"
                     android:adjustViewBounds="true"
                     android:contentDescription="@string/builtin_lock_screen"
+                    android:padding="2dp"
                     android:src="@android:drawable/ic_menu_gallery" />
 
             </LinearLayout>
