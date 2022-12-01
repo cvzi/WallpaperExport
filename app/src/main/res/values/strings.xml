@@ -1,0 +1,25 @@
+<resources><!--
+    This file is part of WallpaperExport (github.com/cvzi/WallpaperExport).
+-->
+    <string name="app_name">WallpaperExport</string>
+    <string name="ask_for_permission_title">Storage Permission</string>
+    <string name="ask_for_permission_message">The storage permission is required to access the wallpaper</string>
+    <string name="unavailable">Unavailable</string>
+    <string name="system_wallpaper">System wallpaper</string>
+    <string name="sharing_chooser">Sharing wallpaper</string>
+    <string name="share_file">Share</string>
+    <string name="save_file">Save</string>
+    <string name="opening">Opening…</string>
+    <string name="wallpaper_saved">Wallpaper saved</string>
+    <string name="failed_to_save_wallpaper">Failed to save wallpaper</string>
+    <string name="failed_to_extract_wallpaper">Failed to extract wallpaper</string>
+    <string name="failed_no_app_found">Found no app to share image to</string>
+    <string name="failed_to_save_image">Failed to save image file</string>
+    <string name="builtin_wallpaper">Built-in wallpaper</string>
+    <string name="builtin_lock_screen">Built-in lock screen</string>
+    <string name="about">About</string>
+    <string name="about_issues"><![CDATA[You found a problem or you have a suggestion?<br>Open an issue at <a href="https://github.com/cvzi/WallpaperExport/issues">github.com/cvzi/WallpaperExport/issues</a>]]></string>
+    <string name="about_open_source_licenses" translatable="false">Open source licenses</string>
+    <string name="about_version" translatable="false"><![CDATA[Version: <a href="https://github.com/cvzi/WallpaperExport/blob/main/CHANGELOG.md">%1$s (%2$d)</a> %3$s]]></string>
+
+</resources>

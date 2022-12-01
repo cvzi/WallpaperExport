@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Base.Theme.WallpaperExport" parent="Theme.Material3.DayNight.NoActionBar" />
+
+    <style name="Theme.WallpaperExport" parent="Base.Theme.WallpaperExport">
+        <item name="android:windowBackground">@color/background_dark</item>
+        <item name="android:statusBarColor">@color/background_dark</item>
+    </style>
+</resources>
