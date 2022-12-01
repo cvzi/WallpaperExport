@@ -1,0 +1,38 @@
+name: 🔨 Gradle Build
+
+on:  
+  push:
+    paths-ignore:
+      - 'docs/**'
+      - 'fastlane/**'
+      - '*.md'
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: JDK
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'adopt'
+        java-version: '15'
+        check-latest: true
+    - name: Add exec permission
+      run: chmod +x gradlew
+    - name: Validate Gradle Wrapper
+      uses: gradle/wrapper-validation-action@v1
+    - name: 🔨 Build
+      run: ./gradlew build
+    - name: 💬 Upload Lint report
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: lint-results.html
+        path: app/build/reports/lint-results*.html
