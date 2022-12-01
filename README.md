@@ -1,4 +1,4 @@
-# <img src="images/ic_launcher-playstore.png" alt="Launcher icon" height="48"> WallpaperExport
+# <img src="fastlane/metadata/android/en-US/images/icon.png" alt="Launcher icon" height="48"> WallpaperExport
 
 The sole purpose of this app is to back up the current wallpaper of an Android device.
 
