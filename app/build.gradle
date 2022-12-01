@@ -16,24 +16,54 @@ android {
         versionName "0.0.1"
     }
 
+    if (project.hasProperty("keystore")) {
+        signingConfigs {
+            release {
+                storeFile rootProject.file(project.property("keystore").toString())
+                storePassword project.property("keystorepassword").toString()
+                keyAlias project.property("keystorealias").toString()
+                keyPassword project.property("keystorekeypassword").toString()
+                enableV1Signing = true
+                enableV2Signing = true
+                enableV3Signing = true
+            }
+        }
+    } else {
+        signingConfigs {
+            release {
+                storeFile rootProject.file('mykey.jks')
+                storePassword 'password'
+                keyAlias 'key0'
+                keyPassword 'password'
+                enableV1Signing = true
+                enableV2Signing = true
+                enableV3Signing = true
+            }
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
         debug {
             minifyEnabled false
             debuggable true
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_11
         targetCompatibility JavaVersion.VERSION_11
     }
+
     kotlinOptions {
         jvmTarget = 11
     }
+
     buildFeatures {
         viewBinding true
     }
