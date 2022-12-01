@@ -1,0 +1,6 @@
+The sole purpose of this app is to back up the current wallpaper.
+
+Up to Android 13 you need to grant the `READ_EXTERNAL_STORAGE` permission to access the wallpaper.
+
+On Android 13 “Tiramisu” it is necessary to grant the `MANAGE_EXTERNAL_STORAGE` permission.
+This permission also allows read and write access to all user files on the device. The app does not use the permission to access any files though.
