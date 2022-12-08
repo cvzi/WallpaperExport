@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+<style>
+
+html,body {
+  color:white;
+  background-color:#2d2d2d;
+  font-family:'Helvetica', 'Arial', 'sans-serif'
+}
+.privacy {
+  color:black;
+  background:white;
+  border-radius: 4px;
+  border: 1px solid white;
+  padding: 10px 15px;
+}
+
+</style>
+
+<script type="text/javascript">
+window.addEventListener("load", (event) => {
+  var appname = document.location.search.match(/appname=([^&]+)/)
+  if (appname && appname[1]) {
+    document.getElementById("appname").appendChild(document.createTextNode(' "' + appname[1] + '"'))
+  }
+})
+</script>
+
+<title>
+    Privacy policy
+</title>
+
+</head>
+
+<body>
+
+<h1>Privacy policy <span id="appname"></span></h1>
+
+<div class="privacy">
+  Personal Data is collected by this app using the following services:
+  <div>
+    <h3>GitHub Pages</h3>
+    Parts of this app are hosted on GitHub Pages which is a service by GitHub, Inc.
+    <br>
+    GitHub Pages collects personal data as specified in their pricavy policy: <a href="https://help.github.com/en/github/site-policy/github-privacy-statement">https://help.github.com/en/github/site-policy/github-privacy-statement</a>
+  </div>
+  <div>
+    <h3>Google Beta Testing Program</h3>
+    If you enter the Google Beta Testing Program for this app, Google LLC will collect personal information including your country, device logs and device information.
+  </div>
+</div>
+
+</body>
+</html>

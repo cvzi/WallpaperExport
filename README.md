@@ -17,5 +17,5 @@ I did not want to include this permission in my app [DarkModeLiveWallpaper](http
 
 ## Screenshots
 
-| <img src="/fastlane/metadata/android/en-US/images/phoneScreenshots/1_en-US.png" alt="Main Activity" /> | <img src="images/PermissionScreen.png" alt="Permission Screen"/> |
+| <img src="/fastlane/metadata/android/en-US/images/phoneScreenshots/1_en-US.png" alt="Main Activity" /> | <img src="docs/images/PermissionScreen.png" alt="Permission Screen"/> |
 | --- | ---- |
