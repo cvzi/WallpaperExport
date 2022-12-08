@@ -107,6 +107,7 @@ class MainActivity : ComponentActivity() {
                 }
             } else {
                 Log.e(TAG, "No document created")
+                revertOriginalText(currentButton)
             }
         }
 
@@ -266,9 +267,9 @@ class MainActivity : ComponentActivity() {
         CoroutineScope(Dispatchers.Default).launch {
             val success = storeToUri(drawable, documentUri)
             runOnUiThread {
+                revertOriginalText(currentButton)
                 if (success) {
                     toastMessage(R.string.wallpaper_saved)
-                    revertOriginalText(currentButton)
                 } else {
                     toastMessage(R.string.failed_to_save_wallpaper)
                 }
