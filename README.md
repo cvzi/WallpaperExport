@@ -3,7 +3,7 @@
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3%20or%20later-a32d2a?logo=GNU)](https://www.gnu.org/licenses/gpl-3.0)
 [![F-Droid](https://img.shields.io/f-droid/v/com.github.cvzi.wallpaperexport.svg?logo=f-droid)](https://f-droid.org/packages/com.github.cvzi.wallpaperexport/)
 [![Download APK file](https://img.shields.io/github/release/cvzi/WallpaperExport.svg?label=Download%20apk&logo=android&color=3d8)](https://github.com/cvzi/WallpaperExport/releases/latest)
-[![Gradle CI](https://img.shields.io/github/workflow/status/cvzi/WallpaperExport/%F0%9F%94%A8%20Gradle%20Build%20CI?logo=github)](https://github.com/cvzi/WallpaperExport/actions/workflows/gradleCI.yml)
+[![Gradle CI](https://img.shields.io/github/actions/workflow/status/cvzi/WallpaperExport/gradleCI.yml?branch=main&logo=github)](https://github.com/cvzi/WallpaperExport/actions/workflows/gradleCI.yml)
 
 The sole purpose of this app is to back up the current wallpaper of an Android device.
 
