@@ -25,9 +25,11 @@ html,body {
 
 <script type="text/javascript">
 window.addEventListener("load", (event) => {
-  var appname = document.location.search.match(/appname=([^&]+)/)
-  if (appname && appname[1]) {
-    document.getElementById("appname").appendChild(document.createTextNode(' "' + appname[1] + '"'))
+  const param = document.location.search.match(/appname=([^&]+)/)
+  if (param  && param [1]) {
+    const name = decodeURIComponent(param[1])
+    document.getElementById("appname").appendChild(document.createTextNode(' "' + name + '"'))
+    document.title += ' "' + name + '"'
   }
 })
 </script>
@@ -53,6 +55,9 @@ window.addEventListener("load", (event) => {
   <div>
     <h3>Google Beta Testing Program</h3>
     If you enter the Google Beta Testing Program for this app, Google LLC will collect personal information including your country, device logs and device information.
+    <br>For more information, see <a href="https://support.google.com/googleplay/answer/7003180">https://support.google.com/googleplay/answer/7003180</a>
+    <br><a href="https://www.google.com/intl/en/privacy.html">Google Privacy Policy</a>
+    <br><a href="https://play.google.com/about/play-terms.html">Google Play Terms of Service</a>
   </div>
 </div>
 
