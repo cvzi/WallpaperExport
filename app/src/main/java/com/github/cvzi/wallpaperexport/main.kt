@@ -170,27 +170,28 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        with(ActivityMainBinding.inflate(layoutInflater)) {
+            binding = this
+            setContentView(root)
 
-        initShareButton(binding.buttonShareLeft, 0, IntentType.SEND)
-        initShareButton(binding.buttonShareMiddle, 1, IntentType.SEND)
-        initShareButton(binding.buttonShareRight, 2, IntentType.SEND)
+            initShareButton(buttonShareLeft, 0, IntentType.SEND)
+            initShareButton(buttonShareMiddle, 1, IntentType.SEND)
+            initShareButton(buttonShareRight, 2, IntentType.SEND)
 
-        initShareButton(binding.buttonSaveLeft, 0, IntentType.SAVE)
-        initShareButton(binding.buttonSaveMiddle, 1, IntentType.SAVE)
-        initShareButton(binding.buttonSaveRight, 2, IntentType.SAVE)
+            initShareButton(buttonSaveLeft, 0, IntentType.SAVE)
+            initShareButton(buttonSaveMiddle, 1, IntentType.SAVE)
+            initShareButton(buttonSaveRight, 2, IntentType.SAVE)
 
-        initShareButton(binding.imageViewLeft, 0, IntentType.VIEW)
-        initShareButton(binding.imageViewMiddle, 1, IntentType.VIEW)
-        initShareButton(binding.imageViewRight, 2, IntentType.VIEW)
+            initShareButton(imageViewLeft, 0, IntentType.VIEW)
+            initShareButton(imageViewMiddle, 1, IntentType.VIEW)
+            initShareButton(imageViewRight, 2, IntentType.VIEW)
 
+            textViewAbout.setOnClickListener(startAbout)
+            imageButtonAbout.setOnClickListener(startAbout)
 
-        binding.textViewAbout.setOnClickListener(startAbout)
-        binding.imageButtonAbout.setOnClickListener(startAbout)
-
-        binding.switchMissingPermission.setOnClickListener {
-            askForPermission(alwaysAsk = true)
+            switchMissingPermission.setOnClickListener {
+                askForPermission(alwaysAsk = true)
+            }
         }
     }
 
@@ -201,31 +202,33 @@ class MainActivity : ComponentActivity() {
 
         mainLooper.removeCallbacks(permissionCheckerRunnable)
 
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
-            binding.switchMissingPermission.visibility = View.GONE
-        }
-
-        hasPermissions({
-            binding.switchMissingPermission.isChecked = true
-            CoroutineScope(Dispatchers.Default).launch {
-                loadWallpapers()
+        binding.apply {
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
+                switchMissingPermission.visibility = View.GONE
             }
-        }, {
-            binding.switchMissingPermission.isChecked = false
-            askForPermission()
-        })
+            hasPermissions({
+                switchMissingPermission.isChecked = true
+                CoroutineScope(Dispatchers.Default).launch {
+                    loadWallpapers()
+                }
+            }, {
+                switchMissingPermission.isChecked = false
+                askForPermission()
+            })
+        }
     }
 
     override fun onPause() {
         super.onPause()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && !Environment.isExternalStorageManager()) {
-            mainLooper.postDelayed(permissionCheckerRunnable, 1000)
-            mainLooper.postDelayed({
-                mainLooper.removeCallbacks(permissionCheckerRunnable)
-            }, 60000)
+            mainLooper.apply {
+                postDelayed(permissionCheckerRunnable, 1000)
+                postDelayed({
+                    removeCallbacks(permissionCheckerRunnable)
+                }, 60000)
+            }
         }
     }
-
 
     private fun shareUri(uri: Uri?, intentType: String, view: View) {
         if (uri != null) {
@@ -238,11 +241,9 @@ class MainActivity : ComponentActivity() {
             addPermissionsToChooser(intent, uri)
 
             if (intent.resolveActivity(packageManager) != null) {
-                if (view is Button) {
-                    view.postDelayed({
-                        revertOriginalText(view)
-                    }, 2000)
-                }
+                view.postDelayed({
+                    revertOriginalText(view)
+                }, 2000)
                 startActivity(intent)
             } else {
                 toastMessage(R.string.failed_no_app_found)
@@ -256,9 +257,9 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun revertOriginalText(view: Any?) {
-        if (view is Button) {
-            (view.getTag(ORIGINAL_TEXT) as? String?)?.let {
-                view.text = it
+        (view as? Button?)?.apply {
+            (getTag(ORIGINAL_TEXT) as? String?)?.let {
+                text = it
             }
         }
     }
@@ -291,9 +292,11 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun initShareButton(shareButton: View, drawablesIndex: Int, intentType: IntentType) {
-        shareButton.setTag(DRAWABLES_INDEX, drawablesIndex)
-        shareButton.setTag(INTENT_TYPE, intentType)
-        shareButton.setOnClickListener(onShareButtonClick)
+        shareButton.apply {
+            setTag(DRAWABLES_INDEX, drawablesIndex)
+            setTag(INTENT_TYPE, intentType)
+            setOnClickListener(onShareButtonClick)
+        }
     }
 
     private suspend fun createTemporaryFile(drawable: Drawable, fileName: String): Uri? {
@@ -347,17 +350,19 @@ class MainActivity : ComponentActivity() {
 
 
     private fun saveDrawable(drawable: Drawable, outputStream: OutputStream) {
-        val bitmap = Bitmap.createBitmap(
+        Bitmap.createBitmap(
             drawable.intrinsicWidth, drawable.intrinsicHeight, Bitmap.Config.ARGB_8888
-        )
-        val canvas = Canvas(bitmap)
-        drawable.setBounds(0, 0, canvas.width, canvas.height)
-        drawable.draw(canvas)
-
-        val bufferedOutputStream = outputStream.buffered()
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, bufferedOutputStream)
-        bufferedOutputStream.flush()
-        bufferedOutputStream.close()
+        ).let { bitmap ->
+            Canvas(bitmap).let { canvas ->
+                drawable.setBounds(0, 0, canvas.width, canvas.height)
+                drawable.draw(canvas)
+            }
+            outputStream.buffered().apply {
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, this)
+                flush()
+                close()
+            }
+        }
     }
 
     private fun askForPermission(alwaysAsk: Boolean = false) {
@@ -407,39 +412,39 @@ class MainActivity : ComponentActivity() {
             drawables[2] = wallpaperManager.getBuiltInDrawable(FLAG_LOCK)
 
             runOnUiThread {
-                displayWallpapers(drawables[0], drawables[1], drawables[2])
+                binding.displayWallpapers(drawables[0], drawables[1], drawables[2])
             }
         }
     }
 
-    private fun displayWallpapers(
+    private fun ActivityMainBinding.displayWallpapers(
         drawable: Drawable?, builtInDrawable: Drawable?, builtInLockDrawable: Drawable?
     ) {
-        binding.textViewInfoLeft.text = if (drawable != null) {
-            binding.linearLayoutLeft.visibility = View.VISIBLE
+        textViewInfoLeft.text = if (drawable != null) {
+            linearLayoutLeft.visibility = View.VISIBLE
             "${drawable.intrinsicWidth}x${drawable.intrinsicHeight}"
         } else {
-            binding.linearLayoutLeft.visibility = View.GONE
+            linearLayoutLeft.visibility = View.GONE
             getString(R.string.unavailable)
         }
-        binding.textViewInfoMiddle.text = if (builtInDrawable != null) {
-            binding.linearLayoutMiddle.visibility = View.VISIBLE
+        textViewInfoMiddle.text = if (builtInDrawable != null) {
+            linearLayoutMiddle.visibility = View.VISIBLE
             "${builtInDrawable.intrinsicWidth}x${builtInDrawable.intrinsicHeight}"
         } else {
-            binding.linearLayoutMiddle.visibility = View.GONE
+            linearLayoutMiddle.visibility = View.GONE
             getString(R.string.unavailable)
         }
-        binding.textViewInfoRight.text = if (builtInLockDrawable != null) {
-            binding.linearLayoutRight.visibility = View.VISIBLE
+        textViewInfoRight.text = if (builtInLockDrawable != null) {
+            linearLayoutRight.visibility = View.VISIBLE
             "${builtInLockDrawable.intrinsicWidth}x${builtInLockDrawable.intrinsicHeight}"
         } else {
-            binding.linearLayoutRight.visibility = View.GONE
+            linearLayoutRight.visibility = View.GONE
             getString(R.string.unavailable)
         }
 
-        binding.imageViewLeft.setImageDrawable(drawable)
-        binding.imageViewMiddle.setImageDrawable(builtInDrawable)
-        binding.imageViewRight.setImageDrawable(builtInLockDrawable)
+        imageViewLeft.setImageDrawable(drawable)
+        imageViewMiddle.setImageDrawable(builtInDrawable)
+        imageViewRight.setImageDrawable(builtInLockDrawable)
     }
 
     private fun periodicPermissionCheck(): Boolean {
@@ -449,7 +454,6 @@ class MainActivity : ComponentActivity() {
         }
         return false
     }
-
 
     private fun toastMessage(message: StringRes) = toastMessage(getString(message))
 
@@ -467,29 +471,33 @@ class AboutActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivityAboutBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        with(ActivityAboutBinding.inflate(layoutInflater)) {
+            binding = this
+            setContentView(root)
 
-        setHtmlText(binding.textViewAboutLicense, R.string.about_license)
+            setHtmlText(textViewAboutLicense, R.string.about_license)
 
-        binding.buttonAboutOpenSourceLicenses.setOnClickListener {
-            AlertDialog.Builder(this)
-                .setTitle(getString(R.string.about_open_source_licenses))
-                .setView(WebView(this).apply {
-                    loadUrl(LICENSE_REPORT)
-                })
-                .show()
+            buttonAboutOpenSourceLicenses.setOnClickListener {
+                AlertDialog.Builder(it.context)
+                    .setTitle(getString(R.string.about_open_source_licenses))
+                    .setView(WebView(it.context).apply {
+                        loadUrl(LICENSE_REPORT)
+                    })
+                    .show()
+            }
+
+            setHtmlText(
+                textViewAppVersion,
+                R.string.about_version,
+                BuildConfig.VERSION_NAME,
+                BuildConfig.VERSION_CODE,
+                BuildConfig.BUILD_TYPE
+            )
+
+            setHtmlText(textViewIssues, R.string.about_issues)
+
+            setHtmlText(textViewDonate, R.string.about_donate)
         }
-
-        setHtmlText(
-            binding.textViewAppVersion,
-            R.string.about_version,
-            BuildConfig.VERSION_NAME,
-            BuildConfig.VERSION_CODE,
-            BuildConfig.BUILD_TYPE
-        )
-
-        setHtmlText(binding.textViewIssues, R.string.about_issues)
     }
 
     private fun setHtmlText(
