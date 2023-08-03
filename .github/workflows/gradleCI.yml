@@ -35,12 +35,18 @@ jobs:
         gpg -d --passphrase "${{secrets.KEYSTORE_FILE_PASSWORD}}" --batch --output github_release.jks github_release.jks.asc
 
     - name: 🎁 Build
+      if: ${{ github.ref_type != 'tag' }}
+      run: |
+        ./gradlew build
+        
+    - name: 🎁 Build release
+      if: ${{ github.ref_type == 'tag' }}
       run: |
         ./gradlew assembleRelease \
         --project-prop keystore=github_release.jks \
         --project-prop keystorepassword=${{secrets.KEYSTORE_PASSWORD}} \
         --project-prop keystorealias=${{secrets.KEYSTORE_KEY_ALIAS}} \
-        --project-prop keystorekeypassword=${{secrets.KEYSTORE_KEY_PASSWORD}}
+        --project-prop keystorekeypassword=${{secrets.KEYSTORE_KEY_PASSWORD}}  
 
     - name: 💬 Upload Lint report
       if: always()
