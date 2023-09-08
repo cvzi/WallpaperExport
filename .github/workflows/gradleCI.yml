@@ -20,7 +20,7 @@ jobs:
       uses: actions/setup-java@v3
       with:
         distribution: 'adopt'
-        java-version: '15'
+        java-version: '17'
         check-latest: true
 
     - name: Add exec permission
