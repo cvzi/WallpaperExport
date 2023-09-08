@@ -30,6 +30,7 @@ jobs:
       uses: gradle/wrapper-validation-action@v1
 
     - name: 🔐 Decrypt keystore
+      if: ${{ github.ref_type == 'tag' }}
       run: |
         echo "${{secrets.KEYSTORE}}" > github_release.jks.asc
         gpg -d --passphrase "${{secrets.KEYSTORE_FILE_PASSWORD}}" --batch --output github_release.jks github_release.jks.asc
