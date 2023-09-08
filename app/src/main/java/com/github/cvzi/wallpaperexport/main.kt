@@ -64,10 +64,10 @@ enum class IntentType {
 class MainActivity : ComponentActivity() {
     companion object {
         private const val TAG = "MainActivity"
-        private const val DRAWABLES_INDEX = R.string.tag_drawables_index
-        private const val INTENT_TYPE = R.string.tag_share_type
-        private const val ORIGINAL_TEXT = R.string.tag_original_text
-        private const val FILE_PROVIDER = R.string.file_provider_authority
+        private val DRAWABLES_INDEX = R.string.tag_drawables_index
+        private val INTENT_TYPE = R.string.tag_share_type
+        private val ORIGINAL_TEXT = R.string.tag_original_text
+        private val FILE_PROVIDER = R.string.file_provider_authority
     }
 
     private lateinit var binding: ActivityMainBinding
@@ -278,7 +278,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    @Suppress("Deprecation")
     private fun addPermissionsToChooser(intent: Intent, uri: Uri) {
         for (resolveInfo in packageManager.queryIntentActivities(
             intent, PackageManager.MATCH_ALL
