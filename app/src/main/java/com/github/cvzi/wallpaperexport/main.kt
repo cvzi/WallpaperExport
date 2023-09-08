@@ -327,7 +327,12 @@ class MainActivity : ComponentActivity() {
 
     private suspend fun storeToUri(drawable: Drawable, uri: Uri): Boolean {
         return withContext(Dispatchers.IO) {
-            val outputStream = contentResolver.openOutputStream(uri)
+            val outputStream = try {
+                contentResolver.openOutputStream(uri)
+            } catch (exception: FileNotFoundException) {
+                Log.e(TAG, "storeToUri() Error opening output stream", exception)
+                return@withContext false
+            }
             if (outputStream != null) {
                 try {
                     saveDrawable(drawable, outputStream)
@@ -358,8 +363,13 @@ class MainActivity : ComponentActivity() {
             }
             outputStream.buffered().apply {
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, this)
-                flush()
-                close()
+                try {
+                    flush()
+                    close()
+                } catch (exception: IOException) {
+                    Log.e(TAG, "saveDrawable() Failed to write file", exception)
+                }
+
             }
         }
     }
