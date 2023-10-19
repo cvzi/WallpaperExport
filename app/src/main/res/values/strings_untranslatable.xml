@@ -21,4 +21,7 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 <a href="https://www.gnu.org/licenses/gpl-3.0.html">GNU General Public License</a> for more details.]]></string>
     <string name="about_donate" translatable="false"><![CDATA[&#x1f49c; <a href="https://cvzi.github.io/.github/">Donate &amp; Support</a>]]></string>
+    <string name="about_open_source_licenses" translatable="false">Open source licenses</string>
+    <string name="about_version" translatable="false"><![CDATA[Version: <a href="https://github.com/cvzi/WallpaperExport/blob/main/CHANGELOG.md">%1$s (%2$d)</a> %3$s]]></string>
+
 </resources>
