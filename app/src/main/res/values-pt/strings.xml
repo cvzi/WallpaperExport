@@ -1,0 +1,24 @@
+<resources><!--
+    This file is part of WallpaperExport (github.com/cvzi/WallpaperExport).
+-->
+    <string name="app_name">ExportarPapelDeParede</string>
+    <string name="ask_for_permission_title">Permissão de Armazenamento</string>
+    <string name="ask_for_permission_message">A permissão de armazenamento é necessária para acessar o papel de parede</string>
+    <string name="unavailable">Indisponível</string>
+    <string name="system_wallpaper">Papel de parede do sistema</string>
+    <string name="builtin_wallpaper">Papel de parede incorporado</string>
+    <string name="lock_screen_wallpaper">Papel de parede da tela de bloqueio</string>
+    <string name="sharing_chooser">Compartilhando papel de parede</string>
+    <string name="share_file">Compartilhar</string>
+    <string name="save_file">Salvar</string>
+    <string name="opening">Abrindo…</string>
+    <string name="wallpaper_saved">Papel de parede salvo</string>
+    <string name="failed_to_save_wallpaper">Falha ao salvar o papel de parede</string>
+    <string name="failed_to_extract_wallpaper">Falha ao extrair o papel de parede</string>
+    <string name="failed_no_app_found">Não foi encontrada nenhuma aplicação para compartilhar a imagem</string>
+    <string name="failed_to_save_image">Falha ao salvar o arquivo de imagem</string>
+    <string name="about">Sobre</string>
+    <string name="about_issues"><![CDATA[Encontrou um problema ou tem uma sugestão?<br>Abra um problema em <a href="https://github.com/cvzi/WallpaperExport/issues">github.com/cvzi/WallpaperExport/issues</a>]]></string>
+</resources>
+
+

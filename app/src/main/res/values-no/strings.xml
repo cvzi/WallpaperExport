@@ -1,0 +1,22 @@
+<resources><!--
+    This file is part of WallpaperExport (github.com/cvzi/WallpaperExport).
+-->
+    <string name="app_name">WallpaperExport</string>
+    <string name="ask_for_permission_title">Tillatelse til lagring</string>
+    <string name="ask_for_permission_message">Tillatelse til lagring er nødvendig for å få tilgang til bakgrunnen</string>
+    <string name="unavailable">Utilgjengelig</string>
+    <string name="system_wallpaper">Systembakgrunn</string>
+    <string name="builtin_wallpaper">Innebygd bakgrunn</string>
+    <string name="lock_screen_wallpaper">Låseskjerm</string>
+    <string name="sharing_chooser">Del bakgrunn</string>
+    <string name="share_file">Del</string>
+    <string name="save_file">Lagre</string>
+    <string name="opening">Åpner…</string>
+    <string name="wallpaper_saved">Bakgrunn lagret</string>
+    <string name="failed_to_save_wallpaper">Klarte ikke å lagre bakgrunnen</string>
+    <string name="failed_to_extract_wallpaper">Klarte ikke å trekke ut bakgrunnen</string>
+    <string name="failed_no_app_found">Fant ingen app for å dele bildet</string>
+    <string name="failed_to_save_image">Klarte ikke å lagre bildefilen</string>
+    <string name="about">Om</string>
+    <string name="about_issues"><![CDATA[Har du funnet et problem eller har du et forslag?<br>Opprett en sak på <a href="https://github.com/cvzi/WallpaperExport/issues">github.com/cvzi/WallpaperExport/issues</a>]]></string>
+</resources>

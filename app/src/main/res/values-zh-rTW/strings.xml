@@ -1,0 +1,22 @@
+<resources><!--
+    This file is part of WallpaperExport (github.com/cvzi/WallpaperExport).
+-->
+    <string name="app_name">壁紙匯出</string>
+    <string name="ask_for_permission_title">儲存權限</string>
+    <string name="ask_for_permission_message">需要儲存權限以訪問壁紙</string>
+    <string name="unavailable">無法使用</string>
+    <string name="system_wallpaper">系統壁紙</string>
+    <string name="builtin_wallpaper">內建壁紙</string>
+    <string name="lock_screen_wallpaper">鎖定畫面壁紙</string>
+    <string name="sharing_chooser">分享壁紙</string>
+    <string name="share_file">分享</string>
+    <string name="save_file">儲存</string>
+    <string name="opening">正在開啟…</string>
+    <string name="wallpaper_saved">壁紙已儲存</string>
+    <string name="failed_to_save_wallpaper">無法儲存壁紙</string>
+    <string name="failed_to_extract_wallpaper">無法提取壁紙</string>
+    <string name="failed_no_app_found">找不到可分享圖片的應用程式</string>
+    <string name="failed_to_save_image">無法儲存圖片檔案</string>
+    <string name="about">關於</string>
+    <string name="about_issues"><![CDATA[發現問題或有建議？<br>在 <a href="https://github.com/cvzi/WallpaperExport/issues">github.com/cvzi/WallpaperExport/issues</a> 上提出問題]]></string>
+</resources>

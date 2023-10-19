@@ -1,0 +1,22 @@
+<resources><!--
+    This file is part of WallpaperExport (github.com/cvzi/WallpaperExport).
+-->
+    <string name="app_name">Xuất Hình Nền</string>
+    <string name="ask_for_permission_title">Quyền Lưu Trữ</string>
+    <string name="ask_for_permission_message">Quyền lưu trữ cần được cấp để truy cập hình nền</string>
+    <string name="unavailable">Không khả dụng</string>
+    <string name="system_wallpaper">Hình nền hệ thống</string>
+    <string name="builtin_wallpaper">Hình nền tích hợp</string>
+    <string name="lock_screen_wallpaper">Hình nền màn hình khóa</string>
+    <string name="sharing_chooser">Chia sẻ hình nền</string>
+    <string name="share_file">Chia sẻ</string>
+    <string name="save_file">Lưu</string>
+    <string name="opening">Đang mở…</string>
+    <string name="wallpaper_saved">Hình nền đã được lưu</string>
+    <string name="failed_to_save_wallpaper">Không thể lưu hình nền</string>
+    <string name="failed_to_extract_wallpaper">Không thể trích xuất hình nền</string>
+    <string name="failed_no_app_found">Không tìm thấy ứng dụng để chia sẻ hình ảnh</string>
+    <string name="failed_to_save_image">Không thể lưu tệp hình ảnh</string>
+    <string name="about">Về ứng dụng</string>
+    <string name="about_issues"><![CDATA[Bạn gặp vấn đề hoặc có đề xuất?<br>Mở một vấn đề tại <a href="https://github.com/cvzi/WallpaperExport/issues">github.com/cvzi/WallpaperExport/issues</a>]]></string>
+</resources>

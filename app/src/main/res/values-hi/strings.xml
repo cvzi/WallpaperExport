@@ -1,0 +1,23 @@
+<resources><!--
+    This file is part of WallpaperExport (github.com/cvzi/WallpaperExport).
+-->
+    <string name="app_name">वॉलपेपर निर्यात</string>
+    <string name="ask_for_permission_title">स्टोरेज अनुमति</string>
+    <string name="ask_for_permission_message">वॉलपेपर तक पहुँच के लिए स्टोरेज अनुमति की आवश्यकता है</string>
+    <string name="unavailable">उपलब्ध नहीं</string>
+    <string name="system_wallpaper">सिस्टम वॉलपेपर</string>
+    <string name="builtin_wallpaper">बिल्ट-इन वॉलपेपर</string>
+    <string name="lock_screen_wallpaper">लॉक स्क्रीन</string>
+    <string name="sharing_chooser">वॉलपेपर साझा करें</string>
+    <string name="share_file">साझा करें</string>
+    <string name="save_file">सहेजें</string>
+    <string name="opening">खुल रहा है…</string>
+    <string name="wallpaper_saved">वॉलपेपर सहेजा गया</string>
+    <string name="failed_to_save_wallpaper">वॉलपेपर सहेजने में विफल</string>
+    <string name="failed_to_extract_wallpaper">वॉलपेपर निकालने में विफल</string>
+    <string name="failed_no_app_found">छवि साझा करने के लिए कोई ऐप नहीं मिला</string>
+    <string name="failed_to_save_image">छवि फ़ाइल सहेजने में विफल</string>
+    <string name="about">बारे में</string>
+    <string name="about_issues"><![CDATA[क्या आपने कोई समस्या पाई है या कोई सुझाव है? <br> <a href="https://github.com/cvzi/WallpaperExport/issues">github.com/cvzi/WallpaperExport/issues</a> पर एक मुद्दा खोलें]]></string>
+</resources>
+

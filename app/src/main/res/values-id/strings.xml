@@ -1,0 +1,22 @@
+<resources><!--
+    This file is part of WallpaperExport (github.com/cvzi/WallpaperExport).
+-->
+    <string name="app_name">WallpaperEkspor</string>
+    <string name="ask_for_permission_title">Izin Penyimpanan</string>
+    <string name="ask_for_permission_message">Izin penyimpanan diperlukan untuk mengakses wallpaper</string>
+    <string name="unavailable">Tidak tersedia</string>
+    <string name="system_wallpaper">Wallpaper Sistem</string>
+    <string name="builtin_wallpaper">Wallpaper Bawaan</string>
+    <string name="lock_screen_wallpaper">Wallpaper Layar Kunci</string>
+    <string name="sharing_chooser">Berbagi wallpaper</string>
+    <string name="share_file">Bagikan</string>
+    <string name="save_file">Simpan</string>
+    <string name="opening">Membuka…</string>
+    <string name="wallpaper_saved">Wallpaper disimpan</string>
+    <string name="failed_to_save_wallpaper">Gagal menyimpan wallpaper</string>
+    <string name="failed_to_extract_wallpaper">Gagal mengekstrak wallpaper</string>
+    <string name="failed_no_app_found">Tidak menemukan aplikasi untuk berbagi gambar</string>
+    <string name="failed_to_save_image">Gagal menyimpan file gambar</string>
+    <string name="about">Tentang</string>
+    <string name="about_issues"><![CDATA[Menemukan masalah atau memiliki saran?<br>Buka isu di <a href="https://github.com/cvzi/WallpaperExport/issues">github.com/cvzi/WallpaperExport/issues</a>]]></string>
+</resources>

@@ -1,0 +1,22 @@
+<resources><!--
+    This file is part of WallpaperExport (github.com/cvzi/WallpaperExport).
+-->
+    <string name="app_name">ExportarFondoDePantalla</string>
+    <string name="ask_for_permission_title">Permiso de almacenamiento</string>
+    <string name="ask_for_permission_message">Se necesita el permiso de almacenamiento para acceder al fondo de pantalla</string>
+    <string name="unavailable">No disponible</string>
+    <string name="system_wallpaper">Fondo de pantalla del sistema</string>
+    <string name="builtin_wallpaper">Fondo de pantalla incorporado</string>
+    <string name="lock_screen_wallpaper">Pantalla de bloqueo</string>
+    <string name="sharing_chooser">Compartir fondo de pantalla</string>
+    <string name="share_file">Compartir</string>
+    <string name="save_file">Guardar</string>
+    <string name="opening">Abriendo…</string>
+    <string name="wallpaper_saved">Fondo de pantalla guardado</string>
+    <string name="failed_to_save_wallpaper">Error al guardar el fondo de pantalla</string>
+    <string name="failed_to_extract_wallpaper">Error al extraer el fondo de pantalla</string>
+    <string name="failed_no_app_found">No se encontró ninguna aplicación para compartir la imagen</string>
+    <string name="failed_to_save_image">Error al guardar el archivo de imagen</string>
+    <string name="about">Acerca de</string>
+    <string name="about_issues"><![CDATA[¿Encontraste un problema o tienes una sugerencia?<br>Abre un problema en <a href="https://github.com/cvzi/WallpaperExport/issues">github.com/cvzi/WallpaperExport/issues</a>]]></string>
+</resources>

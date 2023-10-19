@@ -1,0 +1,24 @@
+<resources><!--
+    This file is part of WallpaperExport (github.com/cvzi/WallpaperExport).
+-->
+    <string name="app_name">تصدير الخلفية</string>
+    <string name="ask_for_permission_title">إذن التخزين</string>
+    <string name="ask_for_permission_message">الإذن بالتخزين مطلوب للوصول إلى الخلفية</string>
+    <string name="unavailable">غير متوفر</string>
+    <string name="system_wallpaper">خلفية النظام</string>
+    <string name="builtin_wallpaper">خلفية مدمجة</string>
+    <string name="lock_screen_wallpaper">خلفية الشاشة القفل</string>
+    <string name="sharing_chooser">مشاركة الخلفية</string>
+    <string name="share_file">مشاركة</string>
+    <string name="save_file">حفظ</string>
+    <string name="opening">جاري الفتح…</string>
+    <string name="wallpaper_saved">تم حفظ الخلفية</string>
+    <string name="failed_to_save_wallpaper">فشل في حفظ الخلفية</string>
+    <string name="failed_to_extract_wallpaper">فشل في استخراج الخلفية</string>
+    <string name="failed_no_app_found">لم يتم العثور على تطبيق لمشاركة الصورة</string>
+    <string name="failed_to_save_image">فشل في حفظ ملف الصورة</string>
+    <string name="about">حول التطبيق</string>
+    <string name="about_issues"><![CDATA[هل واجهت مشكلة أو لديك اقتراح؟<br>افتح طلب في <a href="https://github.com/cvzi/WallpaperExport/issues">github.com/cvzi/WallpaperExport/issues</a>]]></string>
+</resources>
+
+

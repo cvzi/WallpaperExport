@@ -1,0 +1,22 @@
+<resources><!--
+    This file is part of WallpaperExport (github.com/cvzi/WallpaperExport).
+-->
+    <string name="app_name">ส่งออกภาพพื้นหลัง</string>
+    <string name="ask_for_permission_title">การอนุญาตเก็บข้อมูล</string>
+    <string name="ask_for_permission_message">การอนุญาตเก็บข้อมูลจำเป็นสำหรับการเข้าถึงภาพพื้นหลัง</string>
+    <string name="unavailable">ไม่พร้อมใช้งาน</string>
+    <string name="system_wallpaper">ภาพพื้นหลังระบบ</string>
+    <string name="builtin_wallpaper">ภาพพื้นหลังฝังแบบ</string>
+    <string name="lock_screen_wallpaper">ภาพพื้นหลังหน้าจอล็อค</string>
+    <string name="sharing_chooser">แชร์ภาพพื้นหลัง</string>
+    <string name="share_file">แชร์</string>
+    <string name="save_file">บันทึก</string>
+    <string name="opening">กำลังเปิด…</string>
+    <string name="wallpaper_saved">บันทึกภาพพื้นหลังแล้ว</string>
+    <string name="failed_to_save_wallpaper">ล้มเหลวในการบันทึกภาพพื้นหลัง</string>
+    <string name="failed_to_extract_wallpaper">ล้มเหลวใการแยกภาพพื้นหลัง</string>
+    <string name="failed_no_app_found">ไม่พบแอปเพื่อแชร์รูปภาพ</string>
+    <string name="failed_to_save_image">ล้มเหลวในการบันทึกไฟล์รูปภาพ</string>
+    <string name="about">เกี่ยวกับ</string>
+    <string name="about_issues"><![CDATA[คุณพบปัญหาหรือมีคำแนะนำ? <br>เปิดปัญหาที่ <a href="https://github.com/cvzi/WallpaperExport/issues">github.com/cvzi/WallpaperExport/issues</a>]]></string>
+</resources>
