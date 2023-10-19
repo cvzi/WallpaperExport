@@ -22,10 +22,15 @@ import android.Manifest.permission.READ_EXTERNAL_STORAGE
 import android.annotation.SuppressLint
 import android.app.WallpaperManager
 import android.app.WallpaperManager.FLAG_LOCK
+import android.content.ClipData
+import android.content.ClipDescription
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.*
@@ -36,6 +41,7 @@ import android.util.Log
 import android.view.View
 import android.webkit.WebView
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -46,6 +52,7 @@ import androidx.annotation.RequiresApi
 import androidx.annotation.RequiresPermission
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.FileProvider
+import androidx.core.view.DragStartHelper
 import com.github.cvzi.wallpaperexport.databinding.ActivityAboutBinding
 import com.github.cvzi.wallpaperexport.databinding.ActivityMainBinding
 import kotlinx.coroutines.CoroutineScope
@@ -73,6 +80,7 @@ class MainActivity : ComponentActivity() {
     private lateinit var binding: ActivityMainBinding
 
     private val drawables: Array<Drawable?> = Array(3) { null }
+    private val temporaryFiles: HashMap<String, Uri> = HashMap(3)
     private var askedForPermission = false
     private var currentDrawable: Drawable? = null
     private var currentButton: Button? = null
@@ -154,9 +162,11 @@ class MainActivity : ComponentActivity() {
                     IntentType.VIEW -> {
                         shareUri(uri, Intent.ACTION_VIEW, it)
                     }
+
                     IntentType.SEND -> {
                         shareUri(uri, Intent.ACTION_SEND, it)
                     }
+
                     else -> {
                     }
                 }
@@ -166,6 +176,51 @@ class MainActivity : ComponentActivity() {
 
     }
 
+    private val onImageClick = View.OnClickListener { view ->
+        // Create temporary file for better drag'n'drop experience
+        Toast.makeText(this@MainActivity, "\uD83D\uDCA1 drag and drop", Toast.LENGTH_SHORT).show()
+        val drawablesIndex = view.getTag(DRAWABLES_INDEX) as Int
+        drawables.getOrNull(drawablesIndex)?.let { drawable ->
+            CoroutineScope(Dispatchers.Default).launch {
+                createTemporaryFile(drawable, "wallpaper_$drawablesIndex")
+            }
+        }
+    }
+
+    private val onDragStartListener = OnDragStartListener@{ view: View, _: DragStartHelper ->
+        val imageView = view as? ImageView?
+
+        val drawablesIndex = view.getTag(DRAWABLES_INDEX) as Int
+        val drawable = drawables.getOrNull(drawablesIndex)
+        val fileName = fileNameSuggestion.getOrNull(drawablesIndex) ?: ""
+
+        if (drawable == null) {
+            Log.e(TAG, "onDragStartListener: Drawable is null")
+            toastMessage(R.string.failed_to_extract_wallpaper)
+            return@OnDragStartListener false
+        }
+
+        imageView?.setColorFilter(Color.argb(80, 70, 180, 255))
+
+        CoroutineScope(Dispatchers.Default).launch {
+            val uri = createTemporaryFile(drawable, "wallpaper_$drawablesIndex") ?: return@launch
+            runOnUiThread {
+                val clipData = ClipData(
+                    ClipDescription(fileName, arrayOf("image/*")),
+                    ClipData.Item(uri)
+                )
+                imageView?.colorFilter = null
+                view.startDragAndDrop(
+                    clipData,
+                    View.DragShadowBuilder(view),
+                    null,
+                    View.DRAG_FLAG_GLOBAL or View.DRAG_FLAG_GLOBAL_URI_READ
+                )
+            }
+        }
+
+        return@OnDragStartListener true
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -182,9 +237,9 @@ class MainActivity : ComponentActivity() {
             initShareButton(buttonSaveMiddle, 1, IntentType.SAVE)
             initShareButton(buttonSaveRight, 2, IntentType.SAVE)
 
-            initShareButton(imageViewLeft, 0, IntentType.VIEW)
-            initShareButton(imageViewMiddle, 1, IntentType.VIEW)
-            initShareButton(imageViewRight, 2, IntentType.VIEW)
+            initDragDropImage(imageViewLeft, 0)
+            initDragDropImage(imageViewMiddle, 1)
+            initDragDropImage(imageViewRight, 2)
 
             textViewAbout.setOnClickListener(startAbout)
             imageButtonAbout.setOnClickListener(startAbout)
@@ -298,7 +353,18 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    private fun initDragDropImage(imageView: ImageView, drawablesIndex: Int) {
+        imageView.apply {
+            setTag(DRAWABLES_INDEX, drawablesIndex)
+            DragStartHelper(imageView, onDragStartListener).attach()
+            setOnClickListener(onImageClick)
+        }
+    }
+
     private suspend fun createTemporaryFile(drawable: Drawable, fileName: String): Uri? {
+        if (temporaryFiles.containsKey(fileName)) {
+            return temporaryFiles[fileName]
+        }
         return withContext(Dispatchers.IO) {
             val directory = File(cacheDir, "shared_wallpapers")
             var fileOutputStream: FileOutputStream? = null
@@ -310,9 +376,10 @@ class MainActivity : ComponentActivity() {
                 saveDrawable(drawable, fileOutputStream)
 
                 fileOutputStream.close()
-                return@withContext FileProvider.getUriForFile(
+                temporaryFiles[fileName] = FileProvider.getUriForFile(
                     this@MainActivity, getString(FILE_PROVIDER), file
                 )
+                return@withContext temporaryFiles[fileName]
             } catch (e: IOException) {
                 Log.e(
                     TAG, "createTemporaryFile() Error saving to bitmap: ${e.stackTraceToString()}"
@@ -412,13 +479,25 @@ class MainActivity : ComponentActivity() {
     @RequiresPermission(READ_EXTERNAL_STORAGE)
     private suspend fun loadWallpapers() {
         withContext(Dispatchers.IO) {
+            temporaryFiles.clear()
+
             val wallpaperManager = WallpaperManager.getInstance(this@MainActivity)
 
             drawables[0] = wallpaperManager.drawable
             drawables[1] = wallpaperManager.getBuiltInDrawable(
                 30000, 30000, false, 0.5f, 0.5f
             )
-            drawables[2] = wallpaperManager.getBuiltInDrawable(FLAG_LOCK)
+
+            wallpaperManager.getWallpaperFile(FLAG_LOCK)?.use {
+                drawables[2] =
+                    BitmapDrawable(resources, BitmapFactory.decodeFileDescriptor(it.fileDescriptor))
+            }
+            if (drawables[2] == null && Build.VERSION.SDK_INT >= 34) {
+                drawables[2] = wallpaperManager.getDrawable(FLAG_LOCK)
+            }
+            if (drawables[2] == null) {
+                drawables[2] = wallpaperManager.getBuiltInDrawable(FLAG_LOCK)
+            }
 
             runOnUiThread {
                 binding.displayWallpapers(drawables[0], drawables[1], drawables[2])
@@ -427,7 +506,7 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun ActivityMainBinding.displayWallpapers(
-        drawable: Drawable?, builtInDrawable: Drawable?, builtInLockDrawable: Drawable?
+        drawable: Drawable?, builtInDrawable: Drawable?, lockDrawable: Drawable?
     ) {
         textViewInfoLeft.text = if (drawable != null) {
             linearLayoutLeft.visibility = View.VISIBLE
@@ -443,9 +522,9 @@ class MainActivity : ComponentActivity() {
             linearLayoutMiddle.visibility = View.GONE
             getString(R.string.unavailable)
         }
-        textViewInfoRight.text = if (builtInLockDrawable != null) {
+        textViewInfoRight.text = if (lockDrawable != null) {
             linearLayoutRight.visibility = View.VISIBLE
-            "${builtInLockDrawable.intrinsicWidth}x${builtInLockDrawable.intrinsicHeight}"
+            "${lockDrawable.intrinsicWidth}x${lockDrawable.intrinsicHeight}"
         } else {
             linearLayoutRight.visibility = View.GONE
             getString(R.string.unavailable)
@@ -453,7 +532,7 @@ class MainActivity : ComponentActivity() {
 
         imageViewLeft.setImageDrawable(drawable)
         imageViewMiddle.setImageDrawable(builtInDrawable)
-        imageViewRight.setImageDrawable(builtInLockDrawable)
+        imageViewRight.setImageDrawable(lockDrawable)
     }
 
     private fun periodicPermissionCheck(): Boolean {
