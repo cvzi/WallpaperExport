@@ -151,7 +151,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/builtin_lock_screen" />
+                    android:text="@string/lock_screen_wallpaper" />
 
                 <TextView
                     android:id="@+id/textViewInfoRight"
@@ -168,14 +168,14 @@
                         android:id="@+id/buttonShareRight"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:contentDescription="@string/builtin_lock_screen"
+                        android:contentDescription="@string/lock_screen_wallpaper"
                         android:text="@string/share_file" />
 
                     <Button
                         android:id="@+id/buttonSaveRight"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:contentDescription="@string/builtin_lock_screen"
+                        android:contentDescription="@string/lock_screen_wallpaper"
                         android:text="@string/save_file" />
                 </LinearLayout>
 
@@ -185,7 +185,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:adjustViewBounds="true"
-                    android:contentDescription="@string/builtin_lock_screen"
+                    android:contentDescription="@string/lock_screen_wallpaper"
                     android:padding="2dp"
                     android:src="@android:drawable/ic_menu_gallery" />
 
