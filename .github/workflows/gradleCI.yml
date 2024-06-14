@@ -27,7 +27,7 @@ jobs:
       run: chmod +x gradlew
 
     - name: Validate Gradle Wrapper
-      uses: gradle/wrapper-validation-action@v3
+      uses: gradle/actions/wrapper-validation@v3
 
     - name: 🔐 Decrypt keystore
       if: ${{ github.ref_type == 'tag' }}
