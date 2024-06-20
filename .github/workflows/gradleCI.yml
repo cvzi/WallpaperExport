@@ -73,7 +73,7 @@ jobs:
 
     - name: 🎉 Publish Github release
       if: ${{ github.ref_type == 'tag' }}
-      uses: softprops/action-gh-release@v2.0.6
+      uses: softprops/action-gh-release@v2
       with:
         files: wallpaperexport_gh_${{ steps.version.outputs.versionCode }}.apk
         body_path: fastlane/metadata/android/en-US/changelogs/${{ steps.version.outputs.versionCode }}.txt
