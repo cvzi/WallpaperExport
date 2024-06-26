@@ -23,6 +23,8 @@
     <uses-permission-sdk-23
         android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
+    <uses-permission-sdk-23
+        android:name="android.permission.READ_MEDIA_IMAGES" />
     <uses-permission-sdk-23 android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
 
     <queries>

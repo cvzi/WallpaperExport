@@ -19,7 +19,9 @@
 package com.github.cvzi.wallpaperexport
 
 import android.Manifest.permission.READ_EXTERNAL_STORAGE
+import android.Manifest.permission.READ_MEDIA_IMAGES
 import android.annotation.SuppressLint
+import android.app.PendingIntent
 import android.app.WallpaperManager
 import android.app.WallpaperManager.FLAG_LOCK
 import android.content.ClipData
@@ -33,7 +35,11 @@ import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.net.Uri
-import android.os.*
+import android.os.Build
+import android.os.Bundle
+import android.os.Environment
+import android.os.Handler
+import android.os.Looper
 import android.provider.Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION
 import android.text.Html
 import android.text.method.LinkMovementMethod
@@ -59,7 +65,11 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.io.*
+import java.io.File
+import java.io.FileNotFoundException
+import java.io.FileOutputStream
+import java.io.IOException
+import java.io.OutputStream
 
 
 typealias StringRes = Int
@@ -84,7 +94,6 @@ class MainActivity : ComponentActivity() {
     private var askedForPermission = false
     private var currentDrawable: Drawable? = null
     private var currentButton: Button? = null
-    private val mainLooper = Handler(Looper.getMainLooper())
     private val fileNameSuggestion =
         arrayOf("system_wallpaper.png", "builtin_wallpaper.png", "lockscreen_wallpaper.png")
 
@@ -126,7 +135,7 @@ class MainActivity : ComponentActivity() {
     private val permissionCheckerRunnable: Runnable = object : Runnable {
         override fun run() {
             if (!periodicPermissionCheck()) {
-                mainLooper.postDelayed(this, 1000)
+                Handler(Looper.getMainLooper()).postDelayed(this, 1000)
             }
         }
     }
@@ -255,7 +264,7 @@ class MainActivity : ComponentActivity() {
     override fun onResume() {
         super.onResume()
 
-        mainLooper.removeCallbacks(permissionCheckerRunnable)
+        Handler(Looper.getMainLooper()).removeCallbacks(permissionCheckerRunnable)
 
         binding.apply {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
@@ -276,13 +285,18 @@ class MainActivity : ComponentActivity() {
     override fun onPause() {
         super.onPause()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && !Environment.isExternalStorageManager()) {
-            mainLooper.apply {
+            Handler(Looper.getMainLooper()).apply {
                 postDelayed(permissionCheckerRunnable, 1000)
                 postDelayed({
                     removeCallbacks(permissionCheckerRunnable)
                 }, 60000)
             }
         }
+    }
+
+    override fun onDestroy() {
+        Handler(Looper.getMainLooper()).removeCallbacksAndMessages(null)
+        super.onDestroy()
     }
 
     private fun shareUri(uri: Uri?, intentType: String, view: View) {
@@ -446,18 +460,43 @@ class MainActivity : ComponentActivity() {
             return
         }
         askedForPermission = true
+        var askForPermissionMessage = getString(R.string.ask_for_permission_message)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            askForPermissionMessage += "\n\nYou need to grant two permissions:"
+            if (checkSelfPermission(READ_MEDIA_IMAGES) != PackageManager.PERMISSION_GRANTED) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                    askForPermissionMessage += "\n\nMake sure to accept \"Allow all\"!\n"
+                }
+                askForPermissionMessage += "\n[ ] READ_MEDIA_IMAGES"
+            } else {
+                askForPermissionMessage += "\n[✓] READ_MEDIA_IMAGES"
+            }
+            askForPermissionMessage += if (!Environment.isExternalStorageManager()) {
+                "\n[ ] All files access"
+            } else {
+                "\n[✓] All files access"
+            }
+        }
         AlertDialog.Builder(this)
             .setTitle(R.string.ask_for_permission_title)
-            .setMessage(R.string.ask_for_permission_message)
+            .setMessage(askForPermissionMessage)
             .setPositiveButton(android.R.string.ok) { dialog, _ ->
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    manageStoragePermissionLauncher.launch(
-                        Intent(
-                            ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION,
-                            Uri.parse("package:" + BuildConfig.APPLICATION_ID)
+                    if (checkSelfPermission(
+                            READ_MEDIA_IMAGES
+                        ) != PackageManager.PERMISSION_GRANTED
+                    ) {
+                        requestPermissionLauncher.launch(READ_MEDIA_IMAGES)
+                        askedForPermission = false
+                    } else if (!Environment.isExternalStorageManager()) {
+                        manageStoragePermissionLauncher.launch(
+                            Intent(
+                                ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION,
+                                Uri.parse("package:" + BuildConfig.APPLICATION_ID)
+                            )
                         )
-                    )
-                    dialog.dismiss()
+                        dialog.dismiss()
+                    }
                 } else {
                     requestPermissionLauncher.launch(READ_EXTERNAL_STORAGE)
                 }
@@ -469,7 +508,14 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun hasPermissions(ok: (() -> Unit), error: (() -> Unit)) {
-        if (checkSelfPermission(READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED || (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && Environment.isExternalStorageManager())) {
+        if (checkSelfPermission(READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED ||
+            (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
+                    && Environment.isExternalStorageManager()
+                    && checkSelfPermission(READ_MEDIA_IMAGES) == PackageManager.PERMISSION_GRANTED) ||
+            (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R
+                    && Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU
+                    && Environment.isExternalStorageManager())
+        ) {
             ok()
         } else {
             error()
@@ -482,7 +528,6 @@ class MainActivity : ComponentActivity() {
             temporaryFiles.clear()
 
             val wallpaperManager = WallpaperManager.getInstance(this@MainActivity)
-
             drawables[0] = wallpaperManager.drawable
             drawables[1] = wallpaperManager.getBuiltInDrawable(
                 30000, 30000, false, 0.5f, 0.5f
@@ -492,7 +537,7 @@ class MainActivity : ComponentActivity() {
                 drawables[2] =
                     BitmapDrawable(resources, BitmapFactory.decodeFileDescriptor(it.fileDescriptor))
             }
-            if (drawables[2] == null && Build.VERSION.SDK_INT >= 34) {
+            if (drawables[2] == null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
                 drawables[2] = wallpaperManager.getDrawable(FLAG_LOCK)
             }
             if (drawables[2] == null) {
@@ -500,14 +545,16 @@ class MainActivity : ComponentActivity() {
             }
 
             runOnUiThread {
-                binding.displayWallpapers(drawables[0], drawables[1], drawables[2])
+                binding.displayWallpapers()
             }
         }
     }
 
-    private fun ActivityMainBinding.displayWallpapers(
-        drawable: Drawable?, builtInDrawable: Drawable?, lockDrawable: Drawable?
-    ) {
+    private fun ActivityMainBinding.displayWallpapers() {
+        val drawable: Drawable? = drawables[0]
+        val builtInDrawable: Drawable? = drawables[1]
+        val lockDrawable: Drawable? = drawables[2]
+
         textViewInfoLeft.text = if (drawable != null) {
             linearLayoutLeft.visibility = View.VISIBLE
             "${drawable.intrinsicWidth}x${drawable.intrinsicHeight}"
@@ -537,7 +584,16 @@ class MainActivity : ComponentActivity() {
 
     private fun periodicPermissionCheck(): Boolean {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && Environment.isExternalStorageManager()) {
-            startActivity(Intent(this, this::class.java))
+            // Open Main Activity again
+            Intent(this, this::class.java).let {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) {
+                    PendingIntent.getActivity(this, 0, it.apply {
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    }, PendingIntent.FLAG_IMMUTABLE).send()
+                } else {
+                    startActivity(it)
+                }
+            }
             return true
         }
         return false
