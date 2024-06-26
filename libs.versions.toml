@@ -1,0 +1,33 @@
+[versions]
+compileSdk = "35"
+targetSdk = "35"
+minSdk = "28"
+
+agp = "8.5.0"
+kotlin = "2.0.0"
+licensereport = "0.9.8"
+appcompat = "1.7.0"
+kotlinx-coroutines-android = "1.8.1"
+androidx-core = "1.13.1"
+lifecycle-viewmodel = "2.8.2"
+material = "1.12.0"
+
+[libraries]
+androidx-core = { group = "androidx.core", name = "core-ktx", version.ref = "androidx-core" }
+androidx-lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycle-viewmodel" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinx-coroutines-android" }
+material = { module = "com.google.android.material:material", version.ref = "material" }
+
+[bundles]
+implementation-app = [
+    "androidx-core",
+    "androidx-lifecycle-viewmodel",
+    "androidx-appcompat",
+    "kotlinx-coroutines-android",
+    "material"]
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+license-report = { id = "com.jaredsburrows.license", version.ref = "licensereport" }
