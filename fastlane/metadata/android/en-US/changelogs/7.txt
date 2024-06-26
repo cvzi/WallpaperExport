@@ -1,0 +1,1 @@
+Now works with Android 14 (Upside Down Cake) and 15 (Vanilla Ice Cream)

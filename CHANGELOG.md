@@ -1,5 +1,11 @@
 # WallpaperExport Changelog
 
+## 1.1.2
+*   Add permission [`READ_MEDIA_IMAGES`](https://developer.android.com/reference/android/Manifest.permission#READ_MEDIA_IMAGES)
+*   Update dependencies
+*   Modernize gradle/build infrastructure
+*   Add Github attestations
+
 ## 1.1.1
 *   Update dependencies
 
