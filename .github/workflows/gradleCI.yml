@@ -45,7 +45,7 @@ jobs:
     - name: 🎁 Build release
       run: |
         ./gradlew assembleRelease \
-        --project-prop keystore=github_release.jks \
+        --project-prop keystore=../github_release.jks \
         --project-prop keystorepassword=${{secrets.KEYSTORE_PASSWORD}} \
         --project-prop keystorealias=${{secrets.KEYSTORE_KEY_ALIAS}} \
         --project-prop keystorekeypassword=${{secrets.KEYSTORE_KEY_PASSWORD}}  
