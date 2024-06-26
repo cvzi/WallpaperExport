@@ -13,6 +13,10 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    permissions:
+      id-token: write
+      attestations: write
+
     steps:
     - uses: actions/checkout@v4
 
@@ -30,18 +34,15 @@ jobs:
       uses: gradle/actions/wrapper-validation@v3
 
     - name: 🔐 Decrypt keystore
-      if: ${{ github.ref_type == 'tag' }}
       run: |
         echo "${{secrets.KEYSTORE}}" > github_release.jks.asc
         gpg -d --passphrase "${{secrets.KEYSTORE_FILE_PASSWORD}}" --batch --output github_release.jks github_release.jks.asc
 
     - name: 🎁 Build
-      if: ${{ github.ref_type != 'tag' }}
       run: |
         ./gradlew build
         
     - name: 🎁 Build release
-      if: ${{ github.ref_type == 'tag' }}
       run: |
         ./gradlew assembleRelease \
         --project-prop keystore=github_release.jks \
@@ -70,6 +71,12 @@ jobs:
         VERSION: ${{ github.ref_name }}
       run: |
         mv app/build/outputs/apk/release/app-release.apk wallpaperexport_gh_${{ steps.version.outputs.versionCode }}.apk
+
+    - name: Attest
+      if: ${{ github.ref_type == 'tag' }}
+      uses: actions/attest-build-provenance@v1
+      with:
+        subject-path: 'wallpaperexport_gh_${{ steps.version.outputs.versionCode }}.apk'
 
     - name: 🎉 Publish Github release
       if: ${{ github.ref_type == 'tag' }}
