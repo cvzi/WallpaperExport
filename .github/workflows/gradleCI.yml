@@ -20,14 +20,14 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: JDK
+    - name: ♨️ JDK
       uses: actions/setup-java@v4
       with:
         distribution: 'adopt'
         java-version: '17'
         check-latest: true
 
-    - name: Add exec permission
+    - name: ❎ Add exec permission
       run: chmod +x gradlew
 
     - name: Validate Gradle Wrapper
@@ -61,7 +61,7 @@ jobs:
       if: ${{ github.ref_type == 'tag' }}
       id: version
       run: |
-        versionCode=$(grep -Po "versionCode\s+\K[0-9]+" app/build.gradle)
+        versionCode=$(grep -Po "versionCode\s*=\s*\K[0-9]+" app/build.gradle.kts)
         echo "versionCode: $versionCode"
         echo "versionCode=$versionCode" >> $GITHUB_OUTPUT
 
@@ -72,7 +72,7 @@ jobs:
       run: |
         mv app/build/outputs/apk/release/app-release.apk wallpaperexport_gh_${{ steps.version.outputs.versionCode }}.apk
 
-    - name: Attest
+    - name: 📜 Attest
       if: ${{ github.ref_type == 'tag' }}
       uses: actions/attest-build-provenance@v1
       with:
