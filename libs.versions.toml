@@ -3,7 +3,7 @@ compileSdk = "35"
 targetSdk = "35"
 minSdk = "28"
 
-agp = "8.6.1"
+agp = "8.7.0"
 kotlin = "2.0.20"
 licensereport = "0.9.8"
 appcompat = "1.7.0"
