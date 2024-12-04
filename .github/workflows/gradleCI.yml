@@ -76,7 +76,7 @@ jobs:
 
     - name: 📜 Attest
       if: ${{ github.ref_type == 'tag' }}
-      uses: actions/attest-build-provenance@v1
+      uses: actions/attest-build-provenance@v2
       with:
         subject-path: 'wallpaperexport_gh_${{ steps.version.outputs.versionCode }}.apk'
 
