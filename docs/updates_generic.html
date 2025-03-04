@@ -94,6 +94,10 @@ function load () {
   installed.type = matchOrNull(document.location.search, /type=([\w.]+)/)
   installed.ghrepo = matchOrNull(document.location.search, /repo=([\/\w.]+)/)
 
+  if (installed.package && installed.package.endsWith('.debug')) {
+    installed.package = installed.package.slice(0, -6)
+  }
+
   installed.fdroid = `https://f-droid.org/packages/${installed.package}/#latest`
   installed.github = `https://github.com/${installed.ghrepo}/releases`
 
