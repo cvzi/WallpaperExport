@@ -4,7 +4,7 @@ targetSdk = "35"
 minSdk = "28"
 
 agp = "8.9.2"
-kotlin = "2.1.10"
+kotlin = "2.1.20"
 licensereport = "0.9.8"
 appcompat = "1.7.0"
 kotlinx-coroutines-android = "1.10.1"
