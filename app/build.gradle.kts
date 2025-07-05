@@ -10,8 +10,8 @@ android {
 
     defaultConfig {
         applicationId = "com.github.cvzi.wallpaperexport"
-        versionCode = 7
-        versionName = "1.1.2"
+        versionCode = 9
+        versionName = "1.1.4"
         minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = libs.versions.targetSdk.get().toInt()
     }
@@ -62,13 +62,16 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-    kotlinOptions {
-        jvmTarget = "17"
-    }
 
     buildFeatures {
         viewBinding = true
         buildConfig = true
+    }
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
     }
 }
 
