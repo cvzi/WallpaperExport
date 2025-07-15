@@ -533,7 +533,7 @@ class MainActivity : ComponentActivity() {
                 30000, 30000, false, 0.5f, 0.5f
             )
 
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
 
 
 
