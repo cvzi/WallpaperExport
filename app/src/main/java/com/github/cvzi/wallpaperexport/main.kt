@@ -38,13 +38,10 @@ import android.os.Environment
 import android.os.Handler
 import android.os.Looper
 import android.provider.Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION
-import android.text.Html
-import android.text.method.LinkMovementMethod
 import android.util.Log
 import android.view.View
 import android.webkit.WebView
 import android.widget.Button
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.result.contract.ActivityResultContracts
@@ -565,8 +562,6 @@ class AboutActivity : ComponentActivity() {
             binding = this
             setContentView(root)
 
-            setHtmlText(textViewAboutLicense, R.string.about_license)
-
             buttonAboutOpenSourceLicenses.setOnClickListener {
                 AlertDialog.Builder(it.context)
                     .setTitle(getString(R.string.about_open_source_licenses))
@@ -575,36 +570,6 @@ class AboutActivity : ComponentActivity() {
                     })
                     .show()
             }
-
-            setHtmlText(
-                textViewAppVersion,
-                R.string.about_version,
-                BuildConfig.VERSION_NAME,
-                BuildConfig.VERSION_CODE,
-                BuildConfig.BUILD_TYPE
-            )
-
-            setHtmlText(textViewIssues, R.string.about_issues)
-
-            setHtmlText(textViewDonate, R.string.about_donate)
-        }
-    }
-
-    private fun setHtmlText(
-        textView: TextView,
-        stringRes: StringRes,
-        vararg formatArgs: Any?
-    ): TextView {
-        return setHtmlText(textView, getString(stringRes, *formatArgs))
-    }
-
-    private fun setHtmlText(textView: TextView, htmlString: String): TextView {
-        return textView.apply {
-            movementMethod = LinkMovementMethod()
-            text = Html.fromHtml(
-                htmlString,
-                Html.FROM_HTML_SEPARATOR_LINE_BREAK_DIV
-            )
         }
     }
 }
