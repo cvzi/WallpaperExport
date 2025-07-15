@@ -533,17 +533,23 @@ class MainActivity : ComponentActivity() {
                 30000, 30000, false, 0.5f, 0.5f
             )
 
-            wallpaperManager.getWallpaperFile(FLAG_LOCK)?.use {
-                drawables[2] =
-                    BitmapDrawable(resources, BitmapFactory.decodeFileDescriptor(it.fileDescriptor))
-            }
-            if (drawables[2] == null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-                drawables[2] = wallpaperManager.getDrawable(FLAG_LOCK)
-            }
-            if (drawables[2] == null) {
-                drawables[2] = wallpaperManager.getBuiltInDrawable(FLAG_LOCK)
-            }
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
 
+
+
+            } else {
+
+                wallpaperManager.getWallpaperFile(FLAG_LOCK)?.use {
+                    drawables[2] =
+                        BitmapDrawable(resources, BitmapFactory.decodeFileDescriptor(it.fileDescriptor))
+                }
+                if (drawables[2] == null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                    drawables[2] = wallpaperManager.getDrawable(FLAG_LOCK)
+                }
+                if (drawables[2] == null) {
+                    drawables[2] = wallpaperManager.getBuiltInDrawable(FLAG_LOCK)
+                }
+            }
             runOnUiThread {
                 binding.displayWallpapers()
             }
