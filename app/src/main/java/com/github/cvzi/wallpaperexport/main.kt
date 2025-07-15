@@ -24,14 +24,11 @@ import android.annotation.SuppressLint
 import android.app.PendingIntent
 import android.app.WallpaperManager
 import android.app.WallpaperManager.FLAG_LOCK
-import android.content.ClipData
-import android.content.ClipDescription
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.net.Uri
@@ -47,7 +44,6 @@ import android.util.Log
 import android.view.View
 import android.webkit.WebView
 import android.widget.Button
-import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -58,7 +54,6 @@ import androidx.annotation.RequiresApi
 import androidx.annotation.RequiresPermission
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.FileProvider
-import androidx.core.view.DragStartHelper
 import com.github.cvzi.wallpaperexport.databinding.ActivityAboutBinding
 import com.github.cvzi.wallpaperexport.databinding.ActivityMainBinding
 import kotlinx.coroutines.CoroutineScope
@@ -186,49 +181,6 @@ class MainActivity : ComponentActivity() {
     }
 
     private val onImageClick = View.OnClickListener { view ->
-        // Create temporary file for better drag'n'drop experience
-        Toast.makeText(this@MainActivity, "\uD83D\uDCA1 drag and drop", Toast.LENGTH_SHORT).show()
-        val drawablesIndex = view.getTag(DRAWABLES_INDEX) as Int
-        drawables.getOrNull(drawablesIndex)?.let { drawable ->
-            CoroutineScope(Dispatchers.Default).launch {
-                createTemporaryFile(drawable, "wallpaper_$drawablesIndex")
-            }
-        }
-    }
-
-    private val onDragStartListener = OnDragStartListener@{ view: View, _: DragStartHelper ->
-        val imageView = view as? ImageView?
-
-        val drawablesIndex = view.getTag(DRAWABLES_INDEX) as Int
-        val drawable = drawables.getOrNull(drawablesIndex)
-        val fileName = fileNameSuggestion.getOrNull(drawablesIndex) ?: ""
-
-        if (drawable == null) {
-            Log.e(TAG, "onDragStartListener: Drawable is null")
-            toastMessage(R.string.failed_to_extract_wallpaper)
-            return@OnDragStartListener false
-        }
-
-        imageView?.setColorFilter(Color.argb(80, 70, 180, 255))
-
-        CoroutineScope(Dispatchers.Default).launch {
-            val uri = createTemporaryFile(drawable, "wallpaper_$drawablesIndex") ?: return@launch
-            runOnUiThread {
-                val clipData = ClipData(
-                    ClipDescription(fileName, arrayOf("image/*")),
-                    ClipData.Item(uri)
-                )
-                imageView?.colorFilter = null
-                view.startDragAndDrop(
-                    clipData,
-                    View.DragShadowBuilder(view),
-                    null,
-                    View.DRAG_FLAG_GLOBAL or View.DRAG_FLAG_GLOBAL_URI_READ
-                )
-            }
-        }
-
-        return@OnDragStartListener true
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -245,10 +197,6 @@ class MainActivity : ComponentActivity() {
             initShareButton(buttonSaveLeft, 0, IntentType.SAVE)
             initShareButton(buttonSaveMiddle, 1, IntentType.SAVE)
             initShareButton(buttonSaveRight, 2, IntentType.SAVE)
-
-            initDragDropImage(imageViewLeft, 0)
-            initDragDropImage(imageViewMiddle, 1)
-            initDragDropImage(imageViewRight, 2)
 
             textViewAbout.setOnClickListener(startAbout)
             imageButtonAbout.setOnClickListener(startAbout)
@@ -364,14 +312,6 @@ class MainActivity : ComponentActivity() {
             setTag(DRAWABLES_INDEX, drawablesIndex)
             setTag(INTENT_TYPE, intentType)
             setOnClickListener(onShareButtonClick)
-        }
-    }
-
-    private fun initDragDropImage(imageView: ImageView, drawablesIndex: Int) {
-        imageView.apply {
-            setTag(DRAWABLES_INDEX, drawablesIndex)
-            DragStartHelper(imageView, onDragStartListener).attach()
-            setOnClickListener(onImageClick)
         }
     }
 
