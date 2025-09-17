@@ -9,7 +9,7 @@ licensereport = "0.9.8"
 appcompat = "1.7.1"
 kotlinx-coroutines-android = "1.10.2"
 androidx-core = "1.17.0"
-lifecycle-viewmodel = "2.9.3"
+lifecycle-viewmodel = "2.9.4"
 material = "1.13.0"
 
 [libraries]
