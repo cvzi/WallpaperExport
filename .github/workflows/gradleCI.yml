@@ -51,10 +51,10 @@ jobs:
     - name: 🎁 Build release (common key)
       run: |
         ./gradlew assembleRelease \
-        --project-prop keyStore.release.storeFile=../github_release.jks \
-        --project-prop keyStore.release.storePassword=${{secrets.KEYSTORE_PASSWORD}} \
-        --project-prop keyStore.release.keyAlias=${{secrets.KEYSTORE_KEY_ALIAS_2}} \
-        --project-prop keyStore.release.keyPassword=${{secrets.KEYSTORE_KEY_PASSWORD_2}}
+        --project-prop keystore=../github_release.jks \
+        --project-prop keystorepassword=${{secrets.KEYSTORE_PASSWORD}} \
+        --project-prop keystorealias=${{secrets.KEYSTORE_KEY_ALIAS_2}} \
+        --project-prop keystorekeypassword=${{secrets.KEYSTORE_KEY_PASSWORD_2}}
 
     - name: 🔖 Rename apk file
       run: |
