@@ -66,7 +66,7 @@ jobs:
         subject-path: 'wallpaperexport_commit_${{ github.sha }}.apk'
 
     - name: 🤖 Upload apk
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
         name: signed-apk
         path: wallpaperexport_commit_${{ github.sha }}.apk
@@ -81,7 +81,7 @@ jobs:
 
     - name: 💬 Upload Lint report
       if: always()
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
         name: lint-results.html
         path: app/build/reports/lint-results*.html
