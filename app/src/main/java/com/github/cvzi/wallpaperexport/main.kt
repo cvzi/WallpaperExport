@@ -97,6 +97,8 @@ class MainActivity : ComponentActivity() {
     private val fileNameSuggestion =
         arrayOf("system_wallpaper.png", "builtin_wallpaper.png", "lockscreen_wallpaper.png")
 
+    private val mainHandler: Handler by lazy { Handler(Looper.getMainLooper()) }
+
     @RequiresApi(Build.VERSION_CODES.R)
     private val manageStoragePermissionLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -135,7 +137,7 @@ class MainActivity : ComponentActivity() {
     private val permissionCheckerRunnable: Runnable = object : Runnable {
         override fun run() {
             if (!periodicPermissionCheck()) {
-                Handler(Looper.getMainLooper()).postDelayed(this, 1000)
+                mainHandler.postDelayed(this, 1000)
             }
         }
     }
@@ -264,7 +266,7 @@ class MainActivity : ComponentActivity() {
     override fun onResume() {
         super.onResume()
 
-        Handler(Looper.getMainLooper()).removeCallbacks(permissionCheckerRunnable)
+        mainHandler.removeCallbacks(permissionCheckerRunnable)
 
         binding.apply {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
@@ -285,17 +287,15 @@ class MainActivity : ComponentActivity() {
     override fun onPause() {
         super.onPause()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && !Environment.isExternalStorageManager()) {
-            Handler(Looper.getMainLooper()).apply {
-                postDelayed(permissionCheckerRunnable, 1000)
-                postDelayed({
-                    removeCallbacks(permissionCheckerRunnable)
-                }, 60000)
-            }
+            mainHandler.postDelayed(permissionCheckerRunnable, 1000)
+            mainHandler.postDelayed({
+                mainHandler.removeCallbacks(permissionCheckerRunnable)
+            }, 60000)
         }
     }
 
     override fun onDestroy() {
-        Handler(Looper.getMainLooper()).removeCallbacksAndMessages(null)
+        mainHandler.removeCallbacksAndMessages(null)
         super.onDestroy()
     }
 
