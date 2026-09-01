@@ -5,7 +5,7 @@ minSdk = "28"
 
 agp = "9.3.0"
 kotlin = "2.4.0"
-licensereport = "0.9.8"
+licensereport = "0.9.91"
 appcompat = "1.7.1"
 kotlinx-coroutines-android = "1.11.0"
 androidx-core = "1.18.0"
