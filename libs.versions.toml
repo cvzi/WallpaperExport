@@ -1,6 +1,7 @@
 [versions]
-compileSdk = "36"
-targetSdk = "36"
+compileSdk = "37"
+minorSdk = "2"
+targetSdk = "37"
 minSdk = "28"
 
 agp = "9.5.3"
@@ -8,7 +9,7 @@ kotlin = "2.4.21"
 licensereport = "0.9.91"
 appcompat = "1.8.0"
 kotlinx-coroutines-android = "1.11.0"
-androidx-core = "1.18.0"
+androidx-core = "1.19.1"
 lifecycle-viewmodel = "2.11.1"
 material = "1.14.0"
 

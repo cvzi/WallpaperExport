@@ -6,7 +6,11 @@ plugins {
 
 android {
     namespace = "com.github.cvzi.wallpaperexport"
-    compileSdk = libs.versions.compileSdk.get().toInt()
+    compileSdk {
+        version = release(libs.versions.compileSdk.get().toInt()) {
+            minorApiLevel = libs.versions.minorSdk.get().toInt()
+        }
+    }
 
     defaultConfig {
         applicationId = "com.github.cvzi.wallpaperexport"
