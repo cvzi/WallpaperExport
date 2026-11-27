@@ -14,8 +14,8 @@ android {
 
     defaultConfig {
         applicationId = "com.github.cvzi.wallpaperexport"
-        versionCode = 9
-        versionName = "1.1.4"
+        versionCode = 10
+        versionName = "1.1.5"
         minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = libs.versions.targetSdk.get().toInt()
     }
